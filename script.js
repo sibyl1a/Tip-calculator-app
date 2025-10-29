@@ -3,14 +3,30 @@ const tipBtn = document.querySelectorAll(".grid .button");
 const customTip = document.getElementById("custom-tip");
 const people = document.getElementById("people");
 const resetBtn = document.getElementById("reset");
+const tipPerPerson = document.getElementById("tipPerPerson");
+const total = document.getElementById("totalPerPerson");
+const zeroError = document.getElementById("zeroError");
 let myBill;
 let myTip;
 let myPeople;
 
+resetBtn.addEventListener("click", (e)=>{
+    e.preventDefault();
+    bill.value = "";
+    customTip.value = "";
+    people.value = "";
+    tipPerPerson.innerText = "$0.00";
+    total.innerText = "$0.00";
+    tipBtn.forEach(btn=>{
+        btn.style.background = "";
+        btn.style.color = "";
+    })
+})
 function getBill(){
     bill.addEventListener("input", (e)=>{
         myBill = Number(e.target.value);
         console.log(myBill);
+        calculate();
     })
 }
 
@@ -28,6 +44,7 @@ function getTip(){
             e.target.style.background = "hsl(172, 67%, 45%)";
             e.target.style.color = "hsl(183, 100%, 15%)";
             customTip.value = "";
+            calculate();
     })
     })
 
@@ -38,16 +55,37 @@ function getTip(){
             btn.style.color = "";
         })
         console.log(myTip);
+        calculate();
     })
 }
 
 function getPeople(){
     people.addEventListener("input", (e)=>{
+        const numberPeople = document.getElementById("numberPeople");
         myPeople = Number(e.target.value);
-        console.log(myPeople);
+        if(myPeople===0){
+            zeroError.style.display="flex";
+            numberPeople.style.border="2px solid #EF5350";
+        }else{
+            zeroError.style.display="none";
+            numberPeople.style.border="2px solid transparent";
+        }
+        calculate();
     })
 }
 
-getBill();
-getTip();
-getPeople();
+function calculate(){
+    if(!myBill || !myTip || !myPeople) return;
+    const tipValue = (myBill * myTip/100)/myPeople;
+    const totalValue = (myBill + myBill * myTip/100)/myPeople;
+    tipPerPerson.innerText = `$${tipValue.toFixed(2)}`;
+    total.innerText = `$${totalValue.toFixed(2)}`;
+}
+
+function init(){
+    getBill();
+    getTip();
+    getPeople();
+}
+
+init();
