@@ -10,6 +10,15 @@ let myBill;
 let myTip;
 let myPeople;
 
+function checkBtn(){
+    if(bill.value && (customTip.value || myTip) && people.value){
+        resetBtn.disabled = false;
+        resetBtn.style.background = "hsl(172, 67%, 45%)";
+    }else{
+        resetBtn.disabled = true;
+        resetBtn.style.background = "#0D686D";
+    }
+}
 resetBtn.addEventListener("click", (e)=>{
     e.preventDefault();
     bill.value = "";
@@ -21,12 +30,14 @@ resetBtn.addEventListener("click", (e)=>{
         btn.style.background = "";
         btn.style.color = "";
     })
+    checkBtn();
 })
 function getBill(){
     bill.addEventListener("input", (e)=>{
         myBill = Number(e.target.value);
         console.log(myBill);
         calculate();
+        checkBtn();
     })
 }
 
@@ -35,6 +46,7 @@ function getTip(){
         btn.addEventListener("click", (e)=>{
             e.preventDefault();
             myTip = Number(e.target.dataset.value);
+            checkBtn();
 
             tipBtn.forEach(btn=>{
                 btn.style.background = "";
@@ -56,6 +68,7 @@ function getTip(){
         })
         console.log(myTip);
         calculate();
+        checkBtn();
     })
 }
 
@@ -71,6 +84,7 @@ function getPeople(){
             numberPeople.style.border="2px solid transparent";
         }
         calculate();
+        checkBtn();
     })
 }
 
@@ -86,6 +100,7 @@ function init(){
     getBill();
     getTip();
     getPeople();
+    checkBtn();
 }
 
 init();
