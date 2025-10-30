@@ -11,7 +11,10 @@ let myTip;
 let myPeople;
 
 function checkBtn(){
-    if(bill.value && (customTip.value || myTip) && people.value){
+    const billVal = Number(bill.value);
+    const tipVal = myTip || Number(customTip.value);
+    const peopleVal = Number(people.value);
+    if(billVal > 0 && tipVal > 0 && peopleVal > 0){
         resetBtn.disabled = false;
         resetBtn.style.background = "hsl(172, 67%, 45%)";
     }else{
